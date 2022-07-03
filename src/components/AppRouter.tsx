@@ -2,15 +2,16 @@ import React from 'react';
 import {Navigate, Route, Routes} from "react-router-dom";
 import {Login} from "../pages/Login";
 import {Event} from "../pages/Event";
-
+//import {useSelector} from "react-redux";
 //import {privateRoutes, publicRoutes, RouteNames} from "../router";
-import { RouteNames} from "../router";
+import {RouteNames} from "../router";
+import {useTypedSelector} from "../hooks/useTypedSelector";
 
 const AppRouter = () => {
-    const auth = true;
-    // @ts-ignore
+    const {isAuth} = useTypedSelector(state => state.auth)
+
     return (
-        auth
+        isAuth
             ? <Routes>
                  { /* privateRoutes.map(route =>
                     <Route

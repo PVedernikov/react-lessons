@@ -3,23 +3,44 @@ import {Header} from "antd/es/layout/layout";
 import {Menu, Row} from "antd";
 import {useNavigate } from "react-router-dom";
 import {RouteNames} from "../router";
+import {useTypedSelector} from "../hooks/useTypedSelector";
+import {AuthActionCreators} from "../store/reducers/auth/action-creators";
+import {useDispatch} from "react-redux";
+import {useActions} from "../hooks/useActions";
 
 const Navbar:FC = () => {
     const router = useNavigate();
-    const auth = true;
+    const {isAuth, user} = useTypedSelector(state => state.auth)
+    const {logout} = useActions();
+
     return (
         <Header>
             <Row justify="end">
-                {auth
+                {isAuth
                     ? <>
-                        <div style={{color: 'white' }}>{'%username%'}</div>
+                        <div style={{color: 'white' }}>
+                            {user.username}
+                        </div>
                         <Menu theme="dark" mode="horizontal" selectable={false}>
-                            <Menu.Item onClick={() => console.log('!!! Выйти !!!')} key={1}>Выйти</Menu.Item>
+                            <Menu.Item
+                                // @ts-ignore
+                                onClick={logout}
+                                key={1}
+                            >
+                                Выйти
+                            </Menu.Item>
                         </Menu>
                     </>
-                    : <Menu theme="dark" mode="horizontal" selectable={false}>
-                        <Menu.Item onClick={() => router(RouteNames.LOGIN)} key={1}>Логин</Menu.Item>
-                    </Menu>
+                    : <>
+                        <Menu theme="dark" mode="horizontal" selectable={false}>
+                            <Menu.Item
+                                onClick={() => router(RouteNames.LOGIN)}
+                                key={1}
+                            >
+                                Логин
+                            </Menu.Item>
+                        </Menu>
+                    </>
                 }
 
             </Row>
